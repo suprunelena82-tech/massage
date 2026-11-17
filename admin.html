@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1f3a32">
+<title>Тепло — керування сайтом</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231f3a32'/%3E%3Cpath d='M32 14c10 8 14 18 8 28-3 5-8 8-8 8s-5-3-8-8c-6-10-2-20 8-28z' fill='%23d9a66b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#1f3a32;--forest-2:#2a4a40;--moss:#4a6a5a;--sage:#a9bfae;--sage-soft:#dfe8e0;
+  --sand:#efe6d8;--sand-2:#f6f0e6;--cream:#faf6ef;--terra:#b05f3e;--terra-dark:#964d2e;--gold:#d9a66b;
+  --ink:#1d2b26;--ink-soft:#56645d;--line:rgba(29,43,38,.14);--danger:#b3261e;--ok:#2f7d57;
+  --radius:20px;--radius-sm:12px;--shadow:0 12px 36px -14px rgba(31,58,50,.25);
+  --gutter:clamp(16px,4vw,28px);--ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6;padding-bottom:calc(112px + env(safe-area-inset-bottom));overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--terra);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.wrap{width:100%;max-width:860px;margin-inline:auto;padding-inline:var(--gutter)}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;line-height:1.1}
+
+.top{background:var(--forest);color:#fff;padding:14px 0;padding-top:calc(14px + env(safe-area-inset-top))}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:40px;height:40px;flex:none}
+.brand b{display:block;font-family:'Cormorant Garamond',serif;font-size:24px;letter-spacing:.14em;line-height:1}
+.brand small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--sage);margin-top:3px;font-weight:600}
+.top-actions{display:flex;gap:8px;align-items:center}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 24px;border-radius:999px;font-weight:700;font-size:15px;line-height:1.2;text-align:center;text-decoration:none;transition:transform .3s var(--ease),background .25s,box-shadow .3s,opacity .2s}
+.btn--primary{background:var(--terra);color:#fff;box-shadow:0 10px 26px -10px rgba(176,95,62,.7)}
+.btn--primary:hover:not(:disabled){background:var(--terra-dark);transform:translateY(-1px)}
+.btn--ghost{border:1.5px solid var(--line);background:#fff}
+.btn--ghost:hover{border-color:var(--moss)}
+.btn--dark-ghost{border:1.5px solid rgba(255,255,255,.3);color:#fff;min-height:40px;padding:8px 18px;font-size:14px}
+.btn--dark-ghost:hover{background:rgba(255,255,255,.12)}
+.btn--sm{min-height:40px;padding:8px 16px;font-size:14px}
+.btn--danger{color:var(--danger);border:1.5px solid rgba(179,38,30,.3);background:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn--block{width:100%}
+
+.lead{color:var(--ink-soft)}
+.page-head{padding:clamp(28px,5vw,48px) 0 8px}
+.page-head h1{font-size:clamp(34px,6vw,48px);margin-bottom:10px}
+.page-head p{color:var(--ink-soft);max-width:60ch}
+
+.card{background:#fff;border-radius:var(--radius);padding:clamp(20px,3.5vw,32px);box-shadow:var(--shadow);margin-top:20px}
+.card>h2{font-size:clamp(26px,4vw,32px);margin-bottom:4px;display:flex;align-items:center;gap:12px}
+.card>h2 .num{width:34px;height:34px;border-radius:50%;background:var(--sage-soft);color:var(--forest);font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;display:grid;place-items:center;flex:none}
+.card>.sub{color:var(--ink-soft);font-size:15px;margin-bottom:20px}
+.grid2{display:grid;gap:16px}
+@media (min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+.field{display:grid;gap:6px;align-content:start}
+.field>label,.label{font-weight:700;font-size:14px}
+.field input,.field select,.field textarea{width:100%;min-height:50px;padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--line);background:var(--cream);font-size:16px;transition:border-color .2s,box-shadow .2s,background .2s}
+.field textarea{min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--moss);box-shadow:0 0 0 4px rgba(74,106,90,.18);background:#fff}
+.field.invalid input,.field.invalid textarea,.field.invalid select{border-color:var(--danger);background:#fff5f4}
+.hint{font-size:13px;color:var(--ink-soft);line-height:1.45}
+.err{font-size:13px;color:var(--danger);font-weight:600;display:none}
+.field.invalid .err{display:block}
+
+.switch{display:flex;align-items:center;gap:12px;min-height:48px;cursor:pointer;font-weight:600}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch i{position:relative;width:50px;height:30px;border-radius:99px;background:#c9d2cc;transition:background .25s;flex:none}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .3s var(--ease)}
+.switch input:checked+i{background:var(--moss)}
+.switch input:checked+i::after{transform:translateX(20px)}
+.switch input:focus-visible+i{outline:3px solid var(--terra);outline-offset:3px}
+
+/* Фото */
+.photo{display:grid;gap:16px;align-items:center}
+@media (min-width:640px){.photo{grid-template-columns:150px 1fr}}
+.photo__thumb{width:150px;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,var(--sage),var(--moss));display:grid;place-items:center;color:#fff;font-size:12px;text-align:center;padding:10px;font-weight:600}
+.photo__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.photo__btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.photo input[type=file]{position:absolute;opacity:0;width:1px;height:1px}
+
+/* Послуги */
+.svc{border:1.5px solid var(--line);border-radius:var(--radius-sm);margin-top:12px;background:var(--cream);overflow:hidden}
+.svc[open]{background:#fff;border-color:var(--moss)}
+.svc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:60px}
+.svc>summary::-webkit-details-marker{display:none}
+.svc>summary::after{content:"";width:28px;height:28px;border-radius:50%;flex:none;margin-left:auto;background:var(--sage-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f3a32' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center/14px no-repeat;transition:transform .3s var(--ease)}
+.svc[open]>summary::after{transform:rotate(180deg)}
+.svc__title{font-weight:700;min-width:0}
+.svc__title small{display:block;font-weight:500;color:var(--ink-soft);font-size:13px}
+.badge{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:#eee;color:#666;flex:none}
+.svc__body{padding:4px 16px 18px;display:grid;gap:16px}
+.dur{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.dur .field input{min-height:46px}
+.dur .x{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);color:var(--ink-soft);font-size:20px;line-height:1}
+.dur .x:hover{border-color:var(--danger);color:var(--danger)}
+.svc__foot{display:flex;flex-wrap:wrap;gap:10px;padding-top:12px;border-top:1px dashed var(--line)}
+.svc__foot .spacer{flex:1}
+.add{margin-top:16px}
+
+/* Підключення */
+.how{margin-top:20px;border-radius:var(--radius-sm);background:var(--sand-2);padding:4px 18px}
+.how summary{cursor:pointer;font-weight:700;min-height:52px;display:flex;align-items:center}
+.how ol{margin:4px 0 14px 20px;display:grid;gap:8px;font-size:15px}
+.how code{background:#fff;padding:1px 7px;border-radius:6px;font-size:13px;word-break:break-all}
+.check{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--forest)}
+.msg{display:none;padding:14px 16px;border-radius:var(--radius-sm);font-weight:600;font-size:15px;margin-top:16px}
+.msg.show{display:block}
+.msg--err{background:#fdeceb;color:var(--danger)}
+.msg--ok{background:var(--sage-soft);color:var(--forest)}
+.msg ul{margin:6px 0 0 18px;font-weight:500}
+
+/* Панель збереження */
+.save{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 -10px 30px -14px rgba(31,58,50,.35);padding:12px 0;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.save .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.save__state{flex:1;min-width:140px;font-size:14px;color:var(--ink-soft);font-weight:600}
+.save__state.dirty{color:var(--terra)}
+.save__state.ok{color:var(--ok)}
+.save .btn--primary{min-width:200px}
+@media (max-width:560px){.save .btn--primary{flex:1 1 100%}}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--forest);color:#fff;padding:12px 20px;border-radius:99px;font-weight:600;font-size:15px;opacity:0;pointer-events:none;transition:.4s var(--ease);z-index:30;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+details.plain{margin-top:12px}
+details.plain summary{cursor:pointer;font-weight:700;min-height:48px;display:flex;align-items:center;color:var(--moss)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="20" fill="#2a4a40"/><path d="M32 12c11 8 15 19 8 30-3 5-8 8-8 8s-5-3-8-8c-7-11-3-22 8-30z" fill="#d9a66b"/><path d="M32 20v28M32 32c-4-2-7-5-8-9M32 38c4-2 7-5 8-9" stroke="#1f3a32" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <div><b>ТЕПЛО</b><small>керування сайтом</small></div>
+    </div>
+    <div class="top-actions">
+      <a class="btn btn--dark-ghost" id="siteLink" href="./" target="_blank" rel="noopener">Відкрити сайт</a>
+      <button class="btn btn--dark-ghost" id="logout" type="button" hidden>Вийти</button>
+    </div>
+  </div>
+</header>
+
+<!-- ПІДКЛЮЧЕННЯ -->
+<main class="wrap" id="setup" hidden>
+  <div class="page-head">
+    <h1>Підключення до сайту</h1>
+    <p>Це робиться один раз. Потім зміни цін, контактів і фото публікуються однією кнопкою.</p>
+  </div>
+  <form class="card" id="setupForm" novalidate>
+    <div class="grid2">
+      <div class="field"><label for="sOwner">Логін на GitHub</label><input id="sOwner" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="наприклад, iryna-massage"><span class="err">Вкажіть логін</span></div>
+      <div class="field"><label for="sRepo">Назва репозиторію</label><input id="sRepo" autocapitalize="off" spellcheck="false" placeholder="наприклад, teplo-site"><span class="err">Вкажіть назву репозиторію</span></div>
+    </div>
+    <div class="field" style="margin-top:16px"><label for="sToken">Ключ доступу (токен)</label><input id="sToken" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…"><span class="err">Вставте токен</span>
+      <span class="hint">Токен — це ваш «пароль» до цієї панелі. Він зберігається тільки в цьому браузері й нікуди більше не передається.</span></div>
+    <label class="check"><input type="checkbox" id="sRemember" checked> Запам'ятати на цьому пристрої</label>
+    <div class="msg msg--err" id="setupErr" role="alert"></div>
+    <button class="btn btn--primary btn--block" type="submit" id="setupBtn" style="margin-top:16px">Підключитися</button>
+
+    <details class="how">
+      <summary>Де взяти токен? Покрокова інструкція</summary>
+      <ol>
+        <li>Зайдіть на <b>github.com</b> під своїм акаунтом.</li>
+        <li>Натисніть на аватар → <b>Settings</b> → унизу ліворуч <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b>.</li>
+        <li>Назва: <code>Керування сайтом</code>. Термін дії: оберіть найдовший (до 1 року).</li>
+        <li><b>Repository access</b> → <b>Only select repositories</b> → оберіть репозиторій із сайтом.</li>
+        <li><b>Permissions</b> → <b>Repository permissions</b> → знайдіть <b>Contents</b> і виберіть <b>Read and write</b>.</li>
+        <li>Натисніть <b>Generate token</b>, скопіюйте ключ (починається з <code>github_pat_</code>) і вставте у поле вище. Після закриття сторінки GitHub не покаже його знову.</li>
+      </ol>
+    </details>
+    <details class="plain">
+      <summary>Не хочу використовувати токен</summary>
+      <p class="hint" style="margin-bottom:12px">Можна внести зміни тут, завантажити готовий файл <b>config.json</b> і вручну замінити ним старий файл у репозиторії (GitHub → Add file → Upload files). Фото в цьому режимі змінити не можна.</p>
+      <button class="btn btn--ghost btn--sm" type="button" id="manualBtn">Працювати без підключення</button>
+    </details>
+  </form>
+</main>
+
+<!-- ПАНЕЛЬ -->
+<main class="wrap" id="panel" hidden>
+  <div class="page-head">
+    <h1>Керування сайтом</h1>
+    <p>Змініть потрібне та натисніть «Опублікувати». Зміни з'являться на сайті приблизно за 1–2 хвилини.</p>
+  </div>
+
+  <div class="msg msg--err" id="panelErr" role="alert"></div>
+  <div class="msg msg--ok" id="panelOk" role="status"></div>
+
+  <section class="card" aria-labelledby="h1c">
+    <h2 id="h1c"><span class="num">1</span>Контакти та запис</h2>
+    <p class="sub">Куди надходять заявки та як з вами зв'язатися.</p>
+    <div class="grid2">
+      <div class="field" data-f="phone"><label for="fPhone">Телефон</label><input id="fPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="050 123 45 67"><span class="err">Вкажіть український номер, наприклад 050 123 45 67</span><span class="hint">Показується на сайті та використовується для дзвінків.</span></div>
+      <div class="field" data-f="telegram"><label for="fTg">Telegram (нік)</label><input id="fTg" autocapitalize="off" spellcheck="false" placeholder="@your_username"><span class="err">Нік від 5 символів: латинські літери, цифри, «_»</span><span class="hint">Сюди приходять заявки з форми. Нік можна подивитись у налаштуваннях Telegram.</span></div>
+      <div class="field" data-f="city"><label for="fCity">Місто</label><input id="fCity" placeholder="Вишневе"><span class="err">Вкажіть місто</span></div>
+      <div class="field" data-f="address"><label for="fAddr">Адреса або район</label><input id="fAddr" placeholder="Вишневе"><span class="hint">Під цим написом сайт додає: «Точну адресу надішлю після запису».</span></div>
+      <div class="field" data-f="hours" style="grid-column:1/-1"><label for="fHours">Години роботи</label><input id="fHours" placeholder="Щодня 10:00–20:00"></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h2c">
+    <h2 id="h2c"><span class="num">2</span>Знижка та вільні вікна</h2>
+    <p class="sub">Те, що спонукає записатися саме сьогодні.</p>
+    <div class="grid2">
+      <div class="field" data-f="firstVisitDiscount"><label for="fDisc">Знижка на перший сеанс, %</label><input id="fDisc" type="number" inputmode="numeric" min="0" max="70" step="1"><span class="err">Від 0 до 70</span><span class="hint">0 — знижка вимкнена, і на сайті вона зникне.</span></div>
+      <div class="field"><span class="label">Картка «Запис відкрито»</span>
+        <label class="switch"><input type="checkbox" id="fAvailShow"><i></i><span>Показувати на головній</span></label>
+        <span class="hint">Вимкніть, коли всі години зайняті.</span></div>
+    </div>
+    <div class="field" style="margin-top:16px" data-f="availabilityText"><label for="fAvail">Текст під написом «Запис відкрито»</label><input id="fAvail" maxlength="60" placeholder="є вільні вікна цього тижня"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h3c">
+    <h2 id="h3c"><span class="num">3</span>Про майстра</h2>
+    <p class="sub">Ім'я та фото в блоці «Про майстра».</p>
+    <div class="field" data-f="masterName" style="margin-bottom:20px"><label for="fMaster">Ваше ім'я</label><input id="fMaster" placeholder="Ірина"><span class="err">Вкажіть ім'я</span></div>
+    <div class="label" style="margin-bottom:10px">Фото в блоці «Про майстра»</div>
+    <div class="photo" data-photo="about">
+      <div class="photo__thumb" data-thumb>Стандартне фото</div>
+      <div>
+        <p class="hint">Найкраще вертикальне фото (пропорція 4:5). Воно автоматично зменшується, щоб сайт швидко відкривався.</p>
+        <div class="photo__btns">
+          <label class="btn btn--ghost btn--sm" for="fileAbout">Обрати фото</label>
+          <input type="file" id="fileAbout" accept="image/*">
+          <button class="btn btn--ghost btn--sm" type="button" data-reset hidden>Повернути стандартне</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h4c">
+    <h2 id="h4c"><span class="num">4</span>Головне фото</h2>
+    <p class="sub">Велике фото в арці на першому екрані.</p>
+    <div class="photo" data-photo="hero">
+      <div class="photo__thumb" data-thumb>Стандартне фото</div>
+      <div>
+        <p class="hint">Вертикальне фото 3:4 виглядає найкраще.</p>
+        <div class="photo__btns">
+          <label class="btn btn--ghost btn--sm" for="fileHero">Обрати фото</label>
+          <input type="file" id="fileHero" accept="image/*">
+          <button class="btn btn--ghost btn--sm" type="button" data-reset hidden>Повернути стандартне</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h5c">
+    <h2 id="h5c"><span class="num">5</span>Послуги та ціни</h2>
+    <p class="sub">Натисніть на послугу, щоб змінити назву, опис, тривалість і ціну. Прихована послуга зникне з сайту, але збережеться тут.</p>
+    <div id="svcList"></div>
+    <button class="btn btn--ghost add" type="button" id="addSvc">+ Додати послугу</button>
+  </section>
+
+  <section class="card">
+    <details class="plain" style="margin-top:0">
+      <summary>Резервна копія налаштувань</summary>
+      <p class="hint" style="margin:6px 0 12px">Завантажте файл із усіма поточними налаштуваннями — про всяк випадок.</p>
+      <button class="btn btn--ghost btn--sm" type="button" id="dl">Завантажити config.json</button>
+    </details>
+  </section>
+</main>
+
+<div class="save" id="saveBar" hidden>
+  <div class="wrap">
+    <div class="save__state" id="saveState">Змін немає</div>
+    <button class="btn btn--primary" type="button" id="publish">Опублікувати зміни</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Налаштування за замовчуванням (копія з сайту) */
+const DEFAULTS = {
+  "phone": "+380000000000",
+  "phoneDisplay": "+38 (000) 000-00-00",
+  "telegram": "your_username",
+  "city": "Вишневе",
+  "address": "Вишневе",
+  "hours": "Щодня 10:00–20:00",
+  "firstVisitDiscount": 15,
+  "masterName": "Ірина",
+  "availabilityShow": true,
+  "availabilityText": "є вільні вікна цього тижня",
+  "photoHero": "",
+  "photoAbout": "",
+  "services": [
+    {
+      "id": "classic",
+      "icon": "hand",
+      "name": "Класичний оздоровчий масаж",
+      "desc": "Глибоко опрацьовую спину, шию та плечі. Знімає втому, покращує самопочуття та сон.",
+      "items": [
+        "Спина, шия, плечовий пояс",
+        "Опрацювання м'язових затисків",
+        "Підходить для регулярних візитів"
+      ],
+      "d": [
+        {
+          "m": 60,
+          "p": 900
+        },
+        {
+          "m": 90,
+          "p": 1300
+        }
+      ]
+    },
+    {
+      "id": "relax",
+      "icon": "leaf",
+      "name": "Релакс-масаж з ароматом",
+      "desc": "М'які повільні рухи, теплі масла й приглушене світло: час, коли нервова система нарешті відпочиває.",
+      "items": [
+        "Цілісний масаж тіла",
+        "Ароматичні натуральні масла",
+        "Глибоке розслаблення"
+      ],
+      "d": [
+        {
+          "m": 60,
+          "p": 1000
+        },
+        {
+          "m": 90,
+          "p": 1450
+        }
+      ]
+    },
+    {
+      "id": "deep",
+      "icon": "pulse",
+      "name": "Глибокий масаж спини",
+      "desc": "Для тих, хто багато сидить або тренується: працюю з глибокими шарами м'язів і поперековою зоною.",
+      "items": [
+        "Спина та поперек",
+        "Опрацювання тригерних точок",
+        "Інтенсивність за вашим бажанням"
+      ],
+      "d": [
+        {
+          "m": 60,
+          "p": 1000
+        },
+        {
+          "m": 90,
+          "p": 1450
+        }
+      ]
+    },
+    {
+      "id": "neck",
+      "icon": "user",
+      "name": "Шия та комірцева зона",
+      "desc": "Експрес-формат для офісних днів: допомагає, коли шия «кам'яніє», а голова гуде від напруги.",
+      "items": [
+        "Шия, плечі, верх спини",
+        "Швидке полегшення",
+        "Зручно в обідній час"
+      ],
+      "d": [
+        {
+          "m": 30,
+          "p": 500
+        },
+        {
+          "m": 45,
+          "p": 700
+        }
+      ]
+    },
+    {
+      "id": "head",
+      "icon": "face",
+      "name": "Масаж голови та обличчя",
+      "desc": "Ніжне розслаблення м'язів обличчя та шкіри голови: знімає напругу й дарує відчуття легкості.",
+      "items": [
+        "Голова, обличчя, декольте",
+        "Заспокоює та налаштовує на сон",
+        "Приємно в парі зі спиною"
+      ],
+      "d": [
+        {
+          "m": 45,
+          "p": 700
+        }
+      ]
+    },
+    {
+      "id": "legs",
+      "icon": "drop",
+      "name": "Масаж ніг та стоп",
+      "desc": "Знімає важкість і набряклість після дня на ногах, повертає легкість у кроці.",
+      "items": [
+        "Стегна, гомілки, стопи",
+        "Лімфодренажні рухи",
+        "Для тих, хто весь день на ногах"
+      ],
+      "d": [
+        {
+          "m": 45,
+          "p": 700
+        },
+        {
+          "m": 60,
+          "p": 900
+        }
+      ]
+    }
+  ]
+};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+const fmt = n => Math.round(n).toLocaleString('uk-UA');
+const ICON_NAMES = { hand: 'Руки', leaf: 'Листок', pulse: 'Пульс', user: 'Людина', face: 'Обличчя', drop: 'Крапля', heart: 'Серце', spark: 'Іскра', moon: 'Місяць' };
+const KEY = 'teplo-admin-v1';
+const SITE_BASE = new URL('./', location.href).href;
+
+let S = null;           // { owner, repo, token, branch } або null у ручному режимі
+let manual = false;
+let CFG = null;
+let dirty = false;
+let busy = false;
+const pending = { about: null, hero: null };
+const justPublished = { about: null, hero: null }; // локальний перегляд, поки сайт перезбирається
+const openSvc = new Set();
+
+/* ---------- сховище ---------- */
+function readStore() {
+  for (const st of ['localStorage', 'sessionStorage']) {
+    try { const v = window[st].getItem(KEY); if (v) return JSON.parse(v); } catch (e) {}
+  }
+  return null;
+}
+function writeStore(obj, remember) {
+  try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {}
+  try { (remember ? localStorage : sessionStorage).setItem(KEY, JSON.stringify(obj)); } catch (e) {}
+}
+function clearStore() { try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {} }
+
+/* ---------- утиліти ---------- */
+const b64 = str => { const bytes = new TextEncoder().encode(str); let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b)); return btoa(bin); };
+const unb64 = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, '')), c => c.charCodeAt(0)));
+const blobToB64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
+
+let toastTimer;
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3200); }
+function showMsg(id, html) { const el = $(id); el.innerHTML = html; el.classList.add('show'); }
+function hideMsg(id) { $(id).classList.remove('show'); }
+function setDirty(v = true) {
+  dirty = v;
+  const st = $('#saveState');
+  st.className = 'save__state' + (v ? ' dirty' : '');
+  st.textContent = v ? 'Є незбережені зміни' : 'Змін немає';
+}
+addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+function normPhone(raw) {
+  let d = String(raw || '').replace(/\D/g, '');
+  if (d.length === 10 && d[0] === '0') d = '38' + d;
+  if (!(d.length === 12 && d.startsWith('380'))) return null;
+  return { phone: '+' + d, display: `+38 (${d.slice(2, 5)}) ${d.slice(5, 8)}-${d.slice(8, 10)}-${d.slice(10, 12)}` };
+}
+function normTg(raw) {
+  let t = String(raw || '').trim().replace(/^https?:\/\/(t\.me|telegram\.me)\//i, '').replace(/^@/, '').replace(/[/?#].*$/, '');
+  return /^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(t) ? t : null;
+}
+
+/* ---------- GitHub API ---------- */
+async function gh(path, opts = {}) {
+  const res = await fetch('https://api.github.com' + path, {
+    ...opts,
+    headers: {
+      'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28',
+      'Authorization': 'Bearer ' + S.token, ...(opts.body ? { 'Content-Type': 'application/json' } : {})
+    }
+  });
+  let data = null; try { data = await res.json(); } catch (e) {}
+  if (!res.ok) { const err = new Error((data && data.message) || res.statusText); err.status = res.status; throw err; }
+  return data;
+}
+function human(e) {
+  if (e instanceof TypeError) return 'Немає з\'єднання з інтернетом. Перевірте мережу й спробуйте ще раз.';
+  switch (e.status) {
+    case 401: return 'Токен недійсний або термін його дії закінчився. Створіть новий токен і підключіться знову.';
+    case 403: return 'Токену не вистачає прав. Потрібен дозвіл «Contents → Read and write» саме для репозиторію із сайтом. (Або GitHub тимчасово обмежив запити — зачекайте хвилину.)';
+    case 404: return 'Репозиторій не знайдено. Перевірте логін і назву, та що токен має доступ до цього репозиторію.';
+    case 409: case 422: return 'Файл у репозиторії було змінено в іншому місці. Оновіть сторінку й спробуйте ще раз.';
+    default: return 'Не вдалося виконати дію: ' + (e.message || 'невідома помилка') + '.';
+  }
+}
+async function getFile(path) {
+  try { return await gh(`/repos/${S.owner}/${S.repo}/contents/${path}?ref=${encodeURIComponent(S.branch)}`); }
+  catch (e) { if (e.status === 404) return null; throw e; }
+}
+async function putFile(path, contentB64, message) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const cur = await getFile(path);
+    try {
+      return await gh(`/repos/${S.owner}/${S.repo}/contents/${path}`, {
+        method: 'PUT',
+        body: JSON.stringify({ message, content: contentB64, branch: S.branch, ...(cur && cur.sha ? { sha: cur.sha } : {}) })
+      });
+    } catch (e) { if (attempt === 0 && (e.status === 409 || e.status === 422)) continue; throw e; }
+  }
+}
+
+/* ---------- конфіг ---------- */
+function mergeConfig(remote) {
+  const out = clone(DEFAULTS);
+  if (!remote || typeof remote !== 'object') return out;
+  Object.keys(DEFAULTS).forEach(k => {
+    if (!(k in remote)) return;
+    if (k === 'services') { if (Array.isArray(remote.services) && remote.services.length) out.services = clone(remote.services); }
+    else if (typeof remote[k] === typeof DEFAULTS[k]) out[k] = remote[k];
+  });
+  return out;
+}
+function prepServices() {
+  CFG.services.forEach(s => {
+    s.id = s.id || 's' + Math.random().toString(36).slice(2, 8);
+    s.items = Array.isArray(s.items) ? s.items : [];
+    s._items = s.items.join('\n');
+    s.d = Array.isArray(s.d) && s.d.length ? s.d : [{ m: 60, p: 1000 }];
+  });
+}
+async function loadConfig() {
+  let remote = null;
+  if (S) {
+    const f = await getFile('config.json');
+    if (f && f.content) { try { remote = JSON.parse(unb64(f.content)); } catch (e) {} }
+  } else {
+    try { const r = await fetch('config.json?v=' + Date.now(), { cache: 'no-store' }); if (r.ok) remote = await r.json(); } catch (e) {}
+  }
+  CFG = mergeConfig(remote);
+  prepServices();
+}
+
+/* ---------- фото ---------- */
+async function resizeImage(file, maxW) {
+  let bmp;
+  try { bmp = await createImageBitmap(file); }
+  catch (e) {
+    bmp = await new Promise((res, rej) => { const img = new Image(); const u = URL.createObjectURL(file); img.onload = () => res(img); img.onerror = rej; img.src = u; });
+  }
+  const w = bmp.width, h = bmp.height, k = Math.min(1, maxW / w);
+  const c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(bmp, 0, 0, c.width, c.height);
+  const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .84));
+  if (!blob) throw new Error('canvas');
+  return { blob, url: URL.createObjectURL(blob) };
+}
+function paintPhoto(kind) {
+  const box = $(`[data-photo="${kind}"]`), th = $('[data-thumb]', box), reset = $('[data-reset]', box);
+  const cfgKey = kind === 'hero' ? 'photoHero' : 'photoAbout';
+  const p = pending[kind];
+  let src = null;
+  if (p) src = p.url; else if (justPublished[kind] && CFG[cfgKey]) src = justPublished[kind]; else if (CFG[cfgKey]) src = SITE_BASE + CFG[cfgKey];
+  th.innerHTML = src ? `<img alt="" src="${esc(src)}">` : 'Стандартне фото';
+  const img = $('img', th); if (img) img.addEventListener('error', () => { th.textContent = 'Фото не знайдено'; });
+  reset.hidden = !(p || CFG[cfgKey]);
+}
+function bindPhoto(kind, input) {
+  const box = $(`[data-photo="${kind}"]`);
+  const cfgKey = kind === 'hero' ? 'photoHero' : 'photoAbout';
+  if (manual) {
+    input.disabled = true; $('label[for]', box).style.opacity = .5; $('label[for]', box).style.pointerEvents = 'none';
+    $('.hint', box).textContent = 'У режимі без підключення змінити фото не можна. Підключіться через токен.';
+  }
+  input.addEventListener('change', async () => {
+    const f = input.files && input.files[0]; if (!f) return;
+    try {
+      const r = await resizeImage(f, 1100);
+      pending[kind] = r; paintPhoto(kind); setDirty(); toast('Фото готове до публікації');
+    } catch (e) { toast('Не вдалося прочитати фото. Спробуйте JPG або PNG.'); }
+    input.value = '';
+  });
+  $('[data-reset]', box).addEventListener('click', () => { pending[kind] = null; justPublished[kind] = null; CFG[cfgKey] = ''; paintPhoto(kind); setDirty(); });
+}
+
+/* ---------- послуги ---------- */
+function svcSummary(s) {
+  const ds = s.d.filter(x => +x.m > 0 && +x.p > 0);
+  if (!ds.length) return '';
+  const ps = ds.map(x => +x.p), mn = Math.min(...ps), mx = Math.max(...ps);
+  return `${ds.map(x => x.m + ' хв').join(' / ')} · ${mn === mx ? fmt(mn) : fmt(mn) + '–' + fmt(mx)} ₴`;
+}
+function renderServices() {
+  const box = $('#svcList');
+  box.innerHTML = CFG.services.map((s, i) => `
+  <details class="svc" data-i="${i}" ${openSvc.has(s.id) ? 'open' : ''}>
+    <summary><span class="svc__title"><span data-t>${esc(s.name || 'Нова послуга')}</span><small data-sm>${esc(svcSummary(s))}</small></span>${s.hidden ? '<span class="badge">прихована</span>' : ''}</summary>
+    <div class="svc__body">
+      <div class="field" data-f="name"><label>Назва</label><input data-k="name" value="${esc(s.name)}" maxlength="80"><span class="err">Вкажіть назву</span></div>
+      <div class="field"><label>Короткий опис</label><textarea data-k="desc" maxlength="400" rows="3">${esc(s.desc)}</textarea></div>
+      <div class="field"><label>Що входить (кожен пункт з нового рядка, до 5)</label><textarea data-k="_items" rows="4">${esc(s._items)}</textarea></div>
+      <div>
+        <div class="label" style="margin-bottom:8px">Тривалість і ціна</div>
+        <div style="display:grid;gap:10px">${s.d.map((d, j) => `
+          <div class="dur" data-j="${j}">
+            <div class="field"><label>Хвилин</label><input type="number" inputmode="numeric" min="5" step="5" data-d="m" value="${esc(d.m)}"></div>
+            <div class="field"><label>Ціна, ₴</label><input type="number" inputmode="numeric" min="1" step="10" data-d="p" value="${esc(d.p)}"></div>
+            ${s.d.length > 1 ? `<button class="x" type="button" data-act="rmdur" aria-label="Видалити варіант">×</button>` : '<span></span>'}
+          </div>`).join('')}
+        </div>
+        ${s.d.length < 4 ? `<button class="btn btn--ghost btn--sm" type="button" data-act="adddur" style="margin-top:10px">+ Додати тривалість</button>` : ''}
+        <span class="err" data-derr style="display:none;margin-top:8px">Вкажіть хвилини та ціну більше нуля</span>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Іконка</label><select data-k="icon">${Object.keys(ICON_NAMES).map(k => `<option value="${k}" ${s.icon === k ? 'selected' : ''}>${ICON_NAMES[k]}</option>`).join('')}</select></div>
+        <div class="field"><span class="label">Видимість</span><label class="switch"><input type="checkbox" data-k="show" ${s.hidden ? '' : 'checked'}><i></i><span>Показувати на сайті</span></label></div>
+      </div>
+      <div class="svc__foot">
+        <button class="btn btn--ghost btn--sm" type="button" data-act="up" ${i === 0 ? 'disabled' : ''}>↑ Вище</button>
+        <button class="btn btn--ghost btn--sm" type="button" data-act="down" ${i === CFG.services.length - 1 ? 'disabled' : ''}>↓ Нижче</button>
+        <span class="spacer"></span>
+        <button class="btn btn--danger btn--sm" type="button" data-act="del">Видалити</button>
+      </div>
+    </div>
+  </details>`).join('');
+}
+function initServiceEvents() {
+  const box = $('#svcList');
+  box.addEventListener('toggle', e => {
+    const d = e.target.closest && e.target.closest('details.svc'); if (!d || e.target !== d) return;
+    const s = CFG.services[+d.dataset.i]; if (!s) return;
+    d.open ? openSvc.add(s.id) : openSvc.delete(s.id);
+  }, true);
+  box.addEventListener('input', e => {
+    const card = e.target.closest('details.svc'); if (!card) return;
+    const s = CFG.services[+card.dataset.i];
+    const t = e.target;
+    if (t.dataset.k && t.dataset.k !== 'show' && t.dataset.k !== 'icon') {
+      s[t.dataset.k] = t.value;
+      if (t.dataset.k === 'name') { $('[data-t]', card).textContent = t.value || 'Нова послуга'; t.closest('.field').classList.remove('invalid'); }
+    } else if (t.dataset.d) {
+      const row = t.closest('.dur'); s.d[+row.dataset.j][t.dataset.d] = t.value === '' ? '' : +t.value; $('[data-derr]', card).style.display = 'none';
+    }
+    $('[data-sm]', card).textContent = svcSummary(s);
+    setDirty();
+  });
+  box.addEventListener('change', e => {
+    const card = e.target.closest('details.svc'); if (!card) return;
+    const s = CFG.services[+card.dataset.i], t = e.target;
+    if (t.dataset.k === 'show') { s.hidden = !t.checked; renderServices(); }
+    if (t.dataset.k === 'icon') s.icon = t.value;
+    setDirty();
+  });
+  box.addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const card = b.closest('details.svc'), i = +card.dataset.i, s = CFG.services[i];
+    openSvc.add(s.id);
+    const act = b.dataset.act;
+    if (act === 'adddur') s.d.push({ m: (s.d[s.d.length - 1].m || 30) + 30, p: '' });
+    else if (act === 'rmdur') s.d.splice(+b.closest('.dur').dataset.j, 1);
+    else if (act === 'up' && i > 0) [CFG.services[i - 1], CFG.services[i]] = [CFG.services[i], CFG.services[i - 1]];
+    else if (act === 'down' && i < CFG.services.length - 1) [CFG.services[i + 1], CFG.services[i]] = [CFG.services[i], CFG.services[i + 1]];
+    else if (act === 'del') {
+      if (!confirm(`Видалити послугу «${s.name || 'без назви'}»? Якщо просто хочете прибрати її з сайту — краще вимкніть «Показувати на сайті».`)) return;
+      CFG.services.splice(i, 1);
+    }
+    renderServices(); setDirty();
+  });
+  $('#addSvc').addEventListener('click', () => {
+    const s = { id: 's' + Date.now().toString(36), icon: 'hand', name: '', desc: '', items: [], _items: '', d: [{ m: 60, p: '' }] };
+    CFG.services.push(s); openSvc.add(s.id); renderServices(); setDirty();
+    const card = $(`details.svc[data-i="${CFG.services.length - 1}"]`); if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('[data-k=name]', card).focus({ preventScroll: true }); }
+  });
+}
+
+/* ---------- форма ---------- */
+function fillForm() {
+  const p = CFG;
+  $('#fPhone').value = p.phoneDisplay || p.phone; $('#fTg').value = p.telegram; $('#fCity').value = p.city;
+  $('#fAddr').value = p.address; $('#fHours').value = p.hours; $('#fDisc').value = p.firstVisitDiscount;
+  $('#fAvailShow').checked = !!p.availabilityShow; $('#fAvail').value = p.availabilityText; $('#fMaster').value = p.masterName;
+  paintPhoto('about'); paintPhoto('hero'); renderServices();
+}
+function initFormEvents() {
+  const map = { fPhone: null, fTg: null, fCity: 'city', fAddr: 'address', fHours: 'hours', fAvail: 'availabilityText', fMaster: 'masterName' };
+  Object.keys(map).forEach(id => $('#' + id).addEventListener('input', e => {
+    if (map[id]) CFG[map[id]] = e.target.value;
+    const f = e.target.closest('.field'); if (f) f.classList.remove('invalid');
+    setDirty();
+  }));
+  $('#fDisc').addEventListener('input', e => { CFG.firstVisitDiscount = e.target.value === '' ? '' : +e.target.value; e.target.closest('.field').classList.remove('invalid'); setDirty(); });
+  $('#fAvailShow').addEventListener('change', e => { CFG.availabilityShow = e.target.checked; setDirty(); });
+}
+
+/* ---------- перевірка та збирання ---------- */
+function validateAndBuild() {
+  $$('.field.invalid').forEach(f => f.classList.remove('invalid'));
+  const errs = []; let firstBad = null;
+  const bad = (el, msg) => { const f = el.closest('.field'); if (f) f.classList.add('invalid'); errs.push(msg); if (!firstBad) firstBad = el; };
+
+  const ph = normPhone($('#fPhone').value); if (!ph) bad($('#fPhone'), 'Телефон: вкажіть український номер, наприклад 050 123 45 67');
+  const tg = normTg($('#fTg').value); if (!tg) bad($('#fTg'), 'Telegram: нік від 5 символів (латиниця, цифри, «_»)');
+  const city = $('#fCity').value.trim(); if (!city) bad($('#fCity'), 'Вкажіть місто');
+  const master = $('#fMaster').value.trim(); if (!master) bad($('#fMaster'), 'Вкажіть ваше ім\'я');
+  const disc = Number($('#fDisc').value); if ($('#fDisc').value === '' || !Number.isFinite(disc) || disc < 0 || disc > 70) bad($('#fDisc'), 'Знижка має бути від 0 до 70');
+
+  const services = [];
+  CFG.services.forEach((s, i) => {
+    const card = $(`details.svc[data-i="${i}"]`);
+    const name = (s.name || '').trim();
+    const d = s.d.map(x => ({ m: Math.round(+x.m), p: Math.round(+x.p) }));
+    const dOk = d.length && d.every(x => x.m > 0 && x.p > 0);
+    if (!name) { card.open = true; bad($('[data-k=name]', card), `Послуга №${i + 1}: вкажіть назву`); }
+    if (!dOk) { card.open = true; $('[data-derr]', card).style.display = 'block'; errs.push(`Послуга «${name || '№' + (i + 1)}»: вкажіть хвилини та ціну більше нуля`); if (!firstBad) firstBad = card; }
+    services.push({
+      id: s.id, icon: s.icon, name, desc: (s.desc || '').trim(),
+      items: (s._items || '').split('\n').map(t => t.trim()).filter(Boolean).slice(0, 5),
+      d, hidden: !!s.hidden
+    });
+  });
+  if (!services.some(s => !s.hidden)) errs.push('Має бути хоча б одна послуга, яка показується на сайті');
+
+  if (errs.length) return { errs, firstBad };
+  return {
+    cfg: {
+      phone: ph.phone, phoneDisplay: ph.display, telegram: tg, city, address: $('#fAddr').value.trim() || city,
+      hours: $('#fHours').value.trim() || DEFAULTS.hours, firstVisitDiscount: Math.round(disc), masterName: master,
+      availabilityShow: $('#fAvailShow').checked, availabilityText: $('#fAvail').value.trim() || DEFAULTS.availabilityText,
+      photoHero: CFG.photoHero || '', photoAbout: CFG.photoAbout || '', services
+    }
+  };
+}
+
+/* ---------- публікація ---------- */
+function setBusy(v, label) {
+  busy = v; const b = $('#publish'); b.disabled = v;
+  b.innerHTML = v ? `<span class="spin"></span>${esc(label || 'Публікую…')}` : (manual ? 'Завантажити config.json' : 'Опублікувати зміни');
+}
+function downloadJSON(obj) {
+  const blob = new Blob([JSON.stringify(obj, null, 2) + '\n'], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'config.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+async function publish() {
+  if (busy) return;
+  hideMsg('#panelErr'); hideMsg('#panelOk');
+  const r = validateAndBuild();
+  if (r.errs) {
+    showMsg('#panelErr', 'Перевірте, будь ласка:<ul>' + r.errs.map(e => `<li>${esc(e)}</li>`).join('') + '</ul>');
+    const el = r.firstBad; if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus && el.tagName !== 'DETAILS') el.focus({ preventScroll: true }); }
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const cfg = r.cfg;
+  if (manual) {
+    cfg.updated = new Date().toISOString(); downloadJSON(cfg); setDirty(false);
+    showMsg('#panelOk', '<b>Файл завантажено.</b> Тепер відкрийте репозиторій на GitHub → <b>Add file → Upload files</b> → перетягніть <b>config.json</b> (він замінить старий) → <b>Commit changes</b>.');
+    window.scrollTo({ top: 0, behavior: 'smooth' }); return;
+  }
+  setBusy(true, 'Публікую…');
+  try {
+    const ts = Date.now();
+    for (const kind of ['about', 'hero']) {
+      if (!pending[kind]) continue;
+      const path = `img/${kind}.jpg`;
+      await putFile(path, await blobToB64(pending[kind].blob), `Оновлено фото: ${kind === 'about' ? 'про майстра' : 'головне'}`);
+      cfg[kind === 'about' ? 'photoAbout' : 'photoHero'] = `${path}?v=${ts}`;
+    }
+    cfg.updated = new Date().toISOString();
+    await putFile('config.json', b64(JSON.stringify(cfg, null, 2) + '\n'), 'Оновлено налаштування сайту');
+    CFG.photoAbout = cfg.photoAbout; CFG.photoHero = cfg.photoHero;
+    ['about', 'hero'].forEach(k => { if (pending[k]) justPublished[k] = pending[k].url; });
+    pending.about = pending.hero = null; paintPhoto('about'); paintPhoto('hero');
+    setDirty(false); $('#saveState').className = 'save__state ok'; $('#saveState').textContent = 'Опубліковано ✓';
+    showMsg('#panelOk', '<b>Готово!</b> Зміни збережено. На сайті вони з\'являться приблизно за 1–2 хвилини — оновіть сторінку сайту.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) {
+    showMsg('#panelErr', esc(human(e)));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } finally { setBusy(false); }
+}
+
+/* ---------- запуск ---------- */
+function show(id) { ['#setup', '#panel'].forEach(s => $(s).hidden = s !== id); $('#saveBar').hidden = id !== '#panel'; $('#logout').hidden = !(id === '#panel' && !manual); }
+let panelReady = false;
+async function openPanel() {
+  hideMsg('#panelErr'); hideMsg('#panelOk');
+  await loadConfig();
+  if (!panelReady) { initFormEvents(); initServiceEvents(); bindPhoto('about', $('#fileAbout')); bindPhoto('hero', $('#fileHero')); panelReady = true; }
+  fillForm(); setDirty(false); setBusy(false); show('#panel');
+}
+async function connect(owner, repo, token, remember) {
+  S = { owner, repo, token };
+  const info = await gh(`/repos/${owner}/${repo}`);
+  if (info.permissions && info.permissions.push === false) { const e = new Error('no push'); e.status = 403; throw e; }
+  S.branch = info.default_branch || 'main';
+  writeStore({ owner, repo, token }, remember);
+}
+$('#setupForm').addEventListener('submit', async e => {
+  e.preventDefault(); hideMsg('#setupErr');
+  let owner = $('#sOwner').value.trim(), repo = $('#sRepo').value.trim().replace(/\.git$/, ''), token = $('#sToken').value.trim();
+  const m = (owner + ' ' + repo).match(/github\.com\/([^/\s]+)\/([^/\s?#]+)/i);   // якщо вставили посилання на репозиторій
+  if (m) { owner = m[1]; repo = m[2].replace(/\.git$/, ''); $('#sOwner').value = owner; $('#sRepo').value = repo; }
+  let ok = true;
+  [['#sOwner', owner], ['#sRepo', repo], ['#sToken', token]].forEach(([id, v]) => { const f = $(id).closest('.field'); f.classList.toggle('invalid', !v); if (!v) ok = false; });
+  if (!ok) return;
+  const btn = $('#setupBtn'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Перевіряю…';
+  try { await connect(owner, repo, token, $('#sRemember').checked); manual = false; await openPanel(); }
+  catch (err) { S = null; showMsg('#setupErr', esc(human(err))); }
+  finally { btn.disabled = false; btn.textContent = 'Підключитися'; }
+});
+$('#manualBtn').addEventListener('click', async () => { manual = true; S = null; await openPanel(); });
+$('#logout').addEventListener('click', () => {
+  if (dirty && !confirm('Є незбережені зміни. Вийти без публікації?')) return;
+  clearStore(); S = null; dirty = false; $('#sToken').value = ''; show('#setup');
+});
+$('#publish').addEventListener('click', publish);
+$('#dl').addEventListener('click', () => {
+  const r = validateAndBuild();
+  if (r.errs) { showMsg('#panelErr', 'Спершу виправте:<ul>' + r.errs.map(e => `<li>${esc(e)}</li>`).join('') + '</ul>'); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  downloadJSON(r.cfg);
+});
+$('#siteLink').href = SITE_BASE;
+
+(async function init() {
+  const saved = readStore();
+  if (saved && saved.owner && saved.repo && saved.token) {
+    try { await connect(saved.owner, saved.repo, saved.token, !!(function () { try { return localStorage.getItem(KEY); } catch (e) { return false; } })()); await openPanel(); return; }
+    catch (e) { S = null; show('#setup'); $('#sOwner').value = saved.owner; $('#sRepo').value = saved.repo; showMsg('#setupErr', esc(human(e))); return; }
+  }
+  show('#setup');
+})();
+</script>
+</body>
+</html>
