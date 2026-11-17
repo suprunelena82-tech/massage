@@ -1,7 +1,7 @@
 {
-  "phone": "+380000000000",
-  "phoneDisplay": "+38 (000) 000-00-00",
-  "telegram": "your_username",
+  "phone": "+380976891326",
+  "phoneDisplay": "+38 (097) 689-13-26",
+  "telegram": "zhm_olena",
   "city": "Вишневе",
   "address": "Вишневе",
   "hours": "Щодня 10:00–20:00",
@@ -31,7 +31,8 @@
           "m": 90,
           "p": 1300
         }
-      ]
+      ],
+      "hidden": false
     },
     {
       "id": "relax",
@@ -52,7 +53,8 @@
           "m": 90,
           "p": 1450
         }
-      ]
+      ],
+      "hidden": false
     },
     {
       "id": "deep",
@@ -73,7 +75,8 @@
           "m": 90,
           "p": 1450
         }
-      ]
+      ],
+      "hidden": false
     },
     {
       "id": "neck",
@@ -94,7 +97,8 @@
           "m": 45,
           "p": 700
         }
-      ]
+      ],
+      "hidden": false
     },
     {
       "id": "head",
@@ -111,7 +115,8 @@
           "m": 45,
           "p": 700
         }
-      ]
+      ],
+      "hidden": false
     },
     {
       "id": "legs",
@@ -132,7 +137,9 @@
           "m": 60,
           "p": 900
         }
-      ]
+      ],
+      "hidden": false
     }
-  ]
+  ],
+  "updated": "2026-11-17T13:57:30.063Z"
 }
