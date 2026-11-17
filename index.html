@@ -135,6 +135,13 @@ h1 em,h2 em{font-style:italic;color:var(--terra);font-weight:500}
   padding:96px var(--gutter) 48px;clip-path:circle(0 at calc(100% - 44px) 44px);transition:clip-path .7s var(--ease);visibility:hidden;
 }
 .menu-open .drawer{clip-path:circle(150% at calc(100% - 44px) 44px);visibility:visible}
+.menu-open .header,.menu-open .header.is-stuck{background:var(--forest);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 0 rgba(255,255,255,.16),0 12px 24px -12px rgba(0,0,0,.45)}
+.menu-open .logo b{color:#fff}
+.menu-open .logo small{color:var(--sage)}
+.menu-open .logo svg rect{fill:#2f5246}
+.menu-open .burger{background:var(--terra)}
+.logo b,.logo small{transition:color .35s}
+.drawer{padding-top:calc(104px + env(safe-area-inset-top))}
 .drawer a.dl{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)}
 .drawer .btn{margin-top:28px}
 @media (min-width:960px){
@@ -268,10 +275,10 @@ h1 em,h2 em{font-style:italic;color:var(--terra);font-weight:500}
 @media (min-width:900px){.steps{grid-template-columns:repeat(4,1fr);gap:28px}
   .steps::before{content:"";position:absolute;top:40px;left:12%;right:12%;height:1px;background:repeating-linear-gradient(90deg,var(--terra) 0 6px,transparent 6px 14px);opacity:.5}}
 .step{text-align:center;padding:8px 8px 0;position:relative}
-.step__ico{width:80px;height:80px;margin:0 auto 20px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;color:var(--forest);position:relative;transition:.4s var(--ease)}
+.step__ico{width:80px;height:80px;margin:0 auto 30px;border-radius:50%;background:#fff;box-shadow:0 0 0 7px var(--cream),0 0 0 8.5px rgba(217,166,107,.8),var(--shadow);display:grid;place-items:center;color:var(--forest);position:relative;transition:.4s var(--ease)}
 .step:hover .step__ico{background:var(--forest);color:var(--gold);transform:translateY(-4px)}
 .step__ico .ic{width:32px;height:32px}
-.step__ico::after{counter-increment:s;content:counter(s);position:absolute;top:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center}
+.step h3::before{counter-increment:s;content:"Крок " counter(s);display:block;margin-bottom:8px;font-family:'Manrope',system-ui,sans-serif;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
 .step p{color:var(--ink-soft);font-size:15px;max-width:30ch;margin-inline:auto}
 
 /* Breathing */
@@ -290,7 +297,8 @@ h1 em,h2 em{font-style:italic;color:var(--terra);font-weight:500}
 @keyframes breathe{0%{transform:scale(.7)}40%{transform:scale(1.18)}60%{transform:scale(1.18)}100%{transform:scale(.7)}}
 @keyframes ringb{0%{transform:scale(.8);opacity:.4}40%{transform:scale(1.1);opacity:1}60%{transform:scale(1.1);opacity:1}100%{transform:scale(.8);opacity:.4}}
 .breath__txt{position:absolute;inset:0;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,34px);font-style:italic;color:#fff;z-index:2;text-shadow:0 2px 14px rgba(0,0,0,.25)}
-.pause .btn{margin-inline:6px}
+.pause__actions{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+@media (max-width:560px){.pause__actions{flex-direction:column;align-items:center;gap:16px}.pause__actions .btn{width:100%;max-width:340px}}
 
 /* Gift */
 .gift{display:grid;gap:clamp(28px,5vw,56px);align-items:center;padding:clamp(28px,5vw,64px);border-radius:32px;background:linear-gradient(135deg,var(--sand),var(--sand-2));position:relative;overflow:hidden;box-shadow:var(--shadow)}
@@ -584,7 +592,7 @@ img.is-broken{display:none}
       <div class="breath__orb"></div>
       <div class="breath__txt" id="breathTxt">Готові?</div>
     </div>
-    <div class="reveal">
+    <div class="reveal pause__actions">
       <button class="btn btn--light" id="breathBtn" type="button">Почати дихати</button>
       <a href="#order" class="btn btn--primary">Записатися на масаж</a>
     </div>
@@ -637,7 +645,7 @@ img.is-broken{display:none}
   <div class="container order__grid">
     <div class="reveal">
       <span class="eyebrow">Запис онлайн</span>
-      <h2>Забронюйте час для <em>себе</em></h2>
+      <h2>Заброньуйте час для <em>себе</em></h2>
       <p class="lead">Залиште заявку — я напишу або зателефоную і підберу зручний час. Зазвичай відповідаю протягом години.</p>
       <div class="offer" id="offer"><svg class="ic"><use href="#i-gift"/></svg><span>Знижка на перший сеанс</span></div>
       <div class="contacts">
